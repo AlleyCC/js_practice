@@ -56,20 +56,13 @@ const locations = [
 ];
 // 1.篩選出生於1500年代的發明家
 function searchInventors(inventors){
-  var arr = [];
-  inventors.map(function (inventor, index, inventors){
-    if (inventor.year >= 1500 || inventor.year < 1600){
-      arr.push(inventor);
-    }
-  });
-  return arr;
+  return filteredInventors = inventors.filter(inventor => (inventor.year >= 1500 && inventor.year < 1600));
 }
 console.log(searchInventors(inventors));
 
 // 2.建立包含發明家名字和姓氏的陣列
 function nameOfInventors(inventors){
-  var arr = [];
-  inventors.map(function (inventor, index, inventors){
+  var arr = inventors.map(function (inventor, index, inventors){
       arr.push(inventor.first + " "+inventor.last);
   });
   return arr;
@@ -78,55 +71,36 @@ console.log(nameOfInventors(inventors));
 
 // 3.依照出生日期排序（從最老到最年輕）
 function birthOrder(inventors){
-  const sortedArr = inventors.sort((a, b) => a.year - b.year);
-  const sortedInventorList = [];
-  sortedArr.map(function (inventor, index, inventors){
-    sortedInventorList.push({ 
-      first: inventor.first, 
-      last: inventor.last, 
-      year: inventor.year
-    })
-  })
-  return sortedInventorList;
+  return inventors.sort((a, b) => a.year - b.year)
+                  .map(inventor => ({ 
+                      first: inventor.first, 
+                      last: inventor.last, 
+                      year: inventor.year
+                    })
+                  );
 }
 console.log(birthOrder(inventors));
 
 // 4.計算所有發明家的總壽命
 function sumOfLife(inventors){
-  var sum = 0;
-  inventors.map(function (inventor, index, inventors){
-      const age = inventor.passed - inventor.year;
-      sum += age;
-  });
-  return sum;
+  return inventors.reduce((sum, inventor) => sum + (inventor.passed - inventor.year),0);
 }
 console.log(sumOfLife(inventors))
 
 // 5.列出巴黎所有包含 'de' 的大道名稱
 
 function findLocation(locations){
-  var searchResult = [];
-  locations.forEach(location => {
-    if (location.indexOf('de') !== -1){
-      searchResult.push(location);
-    }
-    
-  });
-  return searchResult;
+  return locations.filter(location => location.indexOf('de') !== -1);
 }
 console.log(findLocation(locations));
 
 // 6.依照壽命長短排序
 function orderOfAge(inventors){
-  const ageOfInventors = [];
-  inventors.map(function (inventor, index, inventors){
-    ageOfInventors.push({
-      name: inventor.first + " " + inventor.last,
-      age: (inventor.passed - inventor.year)
-    });
-  });
-  const sortedAge = ageOfInventors.sort((a, b) => b.age - a.age);
-  return sortedAge;
+ return inventors.map(inventor => ({
+                      name: inventor.first + " " + inventor.last,
+                      age: (inventor.passed - inventor.year)
+                    })
+                  ).sort((a, b) => b.age - a.age);
 }
 console.log(orderOfAge(inventors));
 
@@ -146,16 +120,10 @@ console.log(orderNameByLetters(people))
 // 8.計算資料實例數量
 const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck', 'pogostick'];
 function countDataInstance(data){
-  var map = new Map();
-  data.forEach(item => {
-    if (map.has(item)){
-      map.set(item, map.get(item) + 1);
-    } else {
-      map.set(item, 1);
-    }
-  })
-  var obj = Object.fromEntries(map);
-  return obj;
+  return data.reduce((result, item) => {
+    result[item] = result[item]!== undefined ? result[item]+1 :  1;
+    return result;
+  }, {})
 }
 console.log(countDataInstance(data));
 
