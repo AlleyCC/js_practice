@@ -27,7 +27,7 @@ console.log(isAllAgeQualified(19, people));
 //1.找出 ID 為823423的評論
 function searchComment(id, comments){
   const filteredComment = comments.filter(comment => comment.id == id);
-  if (filteredComment.length < 1) return alert('no data matches');
+  if (filteredComment.length < 1) throw new Error('no data matches');
   return filteredComment;
 }
 console.log(searchComment(823423, comments));
