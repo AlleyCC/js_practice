@@ -6,11 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
-<style>
-  .container{
-    text-align: center;
-  }
-</style>
+
 
 <body>
   <div class="container"></div>
@@ -18,14 +14,14 @@
 </body>
 <script>
   var container = document.getElementsByClassName("container")[0];
-  var html = '';
-  var string = '*';
-  for (i = 0; i < 5; i++) {
-    if (i !== 0){
-      string += '**';
-    }  
-    html += `${string}&nbsp;<br>`;
-  }
-  container.innerHTML = `<span>${html}</span>`;
+    let html = '';
+    let rows =  5;
+    let string = '';
+    for (i = 0; i < rows; i++) {
+      let string = "&nbsp".repeat((rows - i) * 2 - 1);
+      string += "*".repeat((i + 1) * 2 - 1);
+      html += `${string}<br>`;
+    }
+    container.innerHTML = `<span>${html}</span>`;
 </script>
 </html>
