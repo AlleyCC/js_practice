@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab元件</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: block;
+      height: 100vh;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .wrapper {
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: 2px solid #F0F0F0;
+    }
+    .tab {
+      padding: 2%;
+      font-size: medium;
+      background-color: transparent;
+      border: none;
+      color: #4f4f4f;
+    }
+    .tab:focus {
+      padding: 2%;
+      font-size: medium;
+      background-color: transparent;
+      border: none;
+      color: #3b82f680;
+      border-bottom: 3px solid #3b82f680;
+    }
+    .content {
+      padding: 6px 12px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <button class="tab">Item ONE</button>
+    <button class="tab">Item TWO</button>
+    <button class="tab">Item THREE</button>
+  </div>
+  <div class="content">
+  </div>
+  <script>
+    const tabWrapper = document.querySelector('.wrapper');
+   
+    tabWrapper.addEventListener('click', (e) => {
+      document.querySelector('.content').innerHTML = '';
+      const text = e.target.closest('.tab').textContent;
+      document.querySelector('.content').innerHTML += ` <h2>${e.target.textContent}</h2>`;
+    })
+  </script>
+</body>
+</html>

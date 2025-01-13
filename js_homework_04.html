@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://kit.fontawesome.com/6e9edb0517.js" crossorigin="anonymous"></script>
+  <title>Todo-list</title>
+   <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #87CEEB;
+        }
+
+        .todolist-container {
+           background-color: white;
+           border-radius: 3%;
+           margin: 10px;
+           padding: 20px;
+           width: 100vh;
+        }
+
+        .card-title {
+            text-align: center;
+        }
+
+        .fa-file-pen {
+            padding-left: 10px;
+            
+        }
+
+        .input-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+            margin-bottom: 45px;
+        }
+
+        .input-section input {
+            flex-grow: 1;
+            padding: 12px;
+            background-color:  #F0F0F0 ;
+            border-radius: 18px;
+            border: none;
+        }
+
+        .input-section button {
+            position: absolute;
+            right: 0;
+            padding: 5px;
+            background-color: #32CD32;
+            border-radius: 50%;
+            border: none;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            
+        }
+
+        .task {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #F0F0F0;
+            border-radius: 18px;
+            margin: 5px;
+        }
+        .task-description {
+            flex-grow: 7;
+            font-size:larger;
+            padding: 5px;
+        }
+        .task-edition {
+            display: flex;
+            flex-grow: 1;
+            justify-content: space-evenly;
+            align-items: center;
+            width: 40px;
+            height:40px;
+
+        }
+        .task-edition button {
+            width: 20px;
+            height: 20px;
+            border: none;
+        }
+        .task-edition i {
+            font-size: medium;
+        }
+    </style>
+</head>
+<body>
+    <div class="todolist-container">
+        <div class="card-title">
+            <h1>ToDo List<i class="fa-solid fa-file-pen"></i></h1>
+        </div>
+        <div class="input-section">
+            <label for="input-task"></label>
+            <input class="input-task" id="taskInput" type="text">
+            <button class="create-task" id="createBtn"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div class="todo-list-content">
+            <div class="task-container" id="taskContainer">
+                <!-- js要新增的部分 -->
+                <!-- <div class="task">
+                    <div class="task-description">
+                        <span>test</span>
+                    </div>
+                    <div class="task-edition">
+                        <button class="edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="delete">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>                     
+                </div> -->
+                <!-- js要新增的部分 -->
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+        //creat task
+        const createBtn = document.getElementById('createBtn');
+        const taskContainer = document.getElementById('taskContainer');
+        const input = document.getElementById("taskInput");
+        createBtn.addEventListener('click', function(){
+            if (input.value.trim() !== '') {
+                const taskContent =  document.createElement('div');
+                taskContent.classList.add('task');
+                taskContent.innerHTML += `
+                    <div class="task-description">
+                            <span>${input.value}</span>
+                        </div>
+                        <div class="task-edition">
+                            <button class="edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button class="delete">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                `;
+                if (createBtn.classList.contains('update')){
+                    document.querySelector('.task-description.update').innerText = input.value;
+                    createBtn.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                    createBtn.classList.remove('update');
+                } else {
+                    taskContainer.appendChild(taskContent);
+                }
+                input.value='';
+
+                //complete task
+                const taskDescription = document.querySelector('.task-description');
+                taskDescription.addEventListener('click', function () {
+                    taskContent.querySelector('span').style.textDecoration = 'line-through';
+                    taskContent.querySelector('.edit').remove();
+                })
+
+                //update task
+                const editBtn = taskContent.querySelector('.edit');
+                editBtn.addEventListener('click', function(e) {
+                    input.value = taskContent.querySelector('span').innerText;
+                    //換icon
+                    createBtn.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+                    // e.target.closest('task-description').classList.add('update');
+                     
+                    createBtn.classList.add('update');
+                })
+
+                //delete task
+                const deleteBtn = taskContent.querySelector('.delete');
+                deleteBtn.addEventListener('click', function (e) {
+                   e.target.closest('.task').remove();
+                })
+            }
+        })
+        
+
+        
+
+    </script>
+</body>
+</html>

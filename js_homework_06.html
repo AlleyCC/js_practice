@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/6e9edb0517.js" crossorigin="anonymous"></script>
+  <title>手風琴元件</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: block;
+      height: 100vh;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      margin: 15px;
+    }
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+
+    }
+    .nav-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #F0F0F0 ;
+      border:1px solid#dcdcdc;
+    }
+    .nav-header p {
+      flex-grow: 1;
+    }
+    .nav-icon {
+      margin: 4px;
+      color: #606060;
+      cursor: pointer;
+      transform: transform 0.3s ease;
+    }
+    .nav-icon:active {
+      margin: 4px;
+    }
+    .nav-icon.rotated {
+      transform: rotate(90deg);
+    }
+    
+    .nav-content {
+      display: none;
+      border:1px solid#dcdcdc;
+      padding: 15px;
+    }
+    .nav-content.visible{
+      display: block;
+    }
+
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="wrapper">
+      <button class="nav-header">
+        <span class="nav-icon">
+          <i class="fa-solid fa-greater-than"></i>
+          </span>
+        <p class="header-content">Collapsible Group Item #1</p>
+      </button>
+      <div class="nav-content">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
+          eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo
+          lobortis eget.
+        </p>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <button class="nav-header">
+        <span class="nav-icon">
+          <i class="fa-solid fa-greater-than"></i>
+        </span>
+        <p class="header-content">Collapsible Group Item #2</p>
+      </button>
+      <div class="nav-content">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo
+          lobortis
+          eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
+          leo
+          lobortis eget.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="wrapper">
+      <button class="nav-header">
+        <span class="nav-icon">
+          <i class="fa-solid fa-greater-than"></i>
+        </span>
+        <p class="header-content">Collapsible Group Item #3</p>
+      </button>
+      <div class="nav-content">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo
+          lobortis
+          eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit
+          leo
+          lobortis eget.
+        </p>
+      </div>
+    </div>
+    
+
+  </div>
+  <script>
+    const navHeader = document.querySelectorAll('.nav-header');
+    const navContent = document.querySelectorAll('.nav-content');
+    navHeader.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.target.closest('span').classList.toggle('rotated');
+        const navContent = e.target.closest('.nav-header').nextElementSibling;
+        navContent.classList.toggle('visible');
+      })
+    })
+    
+  </script>
+</body>
+</html>
