@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/6e9edb0517.js" crossorigin="anonymous"></script>
+    <title>Pagination</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            width: 70%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px;
+            padding: 5px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
+        .pagination li {
+            display: inline-block;
+            margin: 5px;
+        }
+        .btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 5px;
+            height: 5px;
+            padding: 15px;
+            background-color: transparent;
+            border: none;
+            /* text-align: center;
+            line-height: 15px; */
+            
+        }
+        .btn:hover {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #F0F0F0;
+            border-radius: 50%;
+            padding: 15px;
+        }
+        .btn.page {
+            display: inline-flex;
+            flex-direction: row;
+            width: 15px;
+            height: 15px;
+            background-color: transparent;
+            border: none;
+        }
+        .btn.page:hover {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 15px;
+            height: 15px;
+            background-color: #F0F0F0;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <td>ID</td>
+                <td>Name</td>
+                <td>Email</td>
+            </thead>
+            <tbody id="displayBoard">
+                <!-- <tr>                   
+                  <th >1</th>
+                  <td>John Smith</td>
+                  <td>john.smith@example.com</td>                  
+                </tr> -->
+                
+            </tbody>
+        </table>
+        <div class="pagination">
+            <ul>
+                <li>
+                    <button class="btn first-page">
+                        <span><i class="fa-solid fa-backward-step"></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="btn previous-page">
+                        <span ><i class="fa-solid fa-less-than"></i></span>
+                    </button>
+                </li>
+                <li class="page-group" id="displayPagination">
+                    <!-- <button class="btn page">
+                        <span>1</span>
+                    </button>
+                    <button class="btn page">
+                        <span>2</span>
+                    </button>
+                    <button class="btn page">
+                        <span>3</span>
+                    </button> -->
+                </li>
+                <li>
+                    <button class="btn next-page">
+                        <span><i class="fa-solid fa-greater-than"></i></span>
+                    </button>
+                </li>
+                <li>
+                    <button class="btn last-page">
+                        <span ><i class="fa-solid fa-forward-step"></i></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="./js_homework_07.js"></script>
+</body>
+</html>
