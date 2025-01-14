@@ -51,17 +51,91 @@ const data = [
 
 const displayCount = 5; // 每頁5筆
 const totalPages = Math.ceil(data.length / displayCount);
-const currentPage = 1;
+let currentPage = 1;
 const displayPages = document.getElementById('displayPagination');
+const prevPage = document.querySelector('.previous-page');
+const nextPage = document.querySelector('.next-page');
+const firstPage = document.querySelector('.first-page');
+const lastPage = document.querySelector('.last-page');
 renderData(currentPage);
 displayPagination(currentPage, totalPages);
+
+displayPages.addEventListener('click', (e) => {
+    const button = e.target.closest('.btn.page');
+    if (button){
+        const pageValue = Number(button.dataset.pagenum);
+        if (!isNaN(pageValue)){
+            currentPage = pageValue;
+            renderData(currentPage);
+            displayPagination(currentPage, totalPages)    
+        }
+    }
+    
+})
+
+
+
+prevPage.addEventListener('click', (e) => {
+    const button = document.querySelector('.selected');
+    if (button){
+        let pageValue = Number(button.dataset.pagenum);
+        if (!isNaN(pageValue)){
+            if (pageValue !== 1 ){
+                let currentPage = pageValue - 1;
+                renderData(currentPage);
+                displayPagination(currentPage, totalPages);        
+            }
+        }
+    }
+})
+nextPage.addEventListener('click', (e) => {
+    const button = document.querySelector('.selected');
+    if (button){
+        let pageValue = Number(button.dataset.pagenum);
+        if (!isNaN(pageValue)){
+            if (pageValue !== totalPages){
+                let currentPage = pageValue + 1;
+                renderData(currentPage);
+                displayPagination(currentPage, totalPages);        
+            }
+        }
+    }
+})
+firstPage.addEventListener('click', (e) => {
+    const button = document.querySelector('.selected');
+    if (button){
+        let pageValue = Number(button.dataset.pagenum);
+        if (!isNaN(pageValue)){
+            if (pageValue !== 1){
+                let currentPage = 1;
+                renderData(currentPage);
+                displayPagination(currentPage, totalPages);        
+            } 
+        }
+    }
+})
+lastPage.addEventListener('click', (e) => {
+    const button = document.querySelector('.selected');
+    if (button){
+        let pageValue = Number(button.dataset.pagenum);
+        if (!isNaN(pageValue)){
+            if (pageValue !== totalPages){
+                let currentPage = totalPages;
+                renderData(currentPage);
+                displayPagination(currentPage, totalPages);        
+            }
+        }
+    }
+})
 
 
 //   render data
 function renderData(currentPage){
     const displayBoard = document.getElementById('displayBoard');
     let html = '';
-    for (let i = (currentPage - 1); i < displayCount; i++){
+    let start = ((currentPage - 1) * displayCount);
+    let end = (Number(currentPage) == totalPages)? (data.length - 1) :(currentPage * displayCount - 1);
+    for (let i = start; i <= end; i++){
         html += `
             <tr> 
                 <th>${data[i].id}</th>
@@ -78,13 +152,19 @@ function displayPagination(currentPage, totalPages){
     const pagination = generatePagination(currentPage, totalPages);
     let pageHtml = '';
     pagination.forEach(item => {
-        if (item !== '...'){
+        if (item == currentPage){
+            pageHtml += `
+                <button class="btn page selected" data-pagenum=${item}>
+                    <span>${item}</span>
+                </button>
+            `;
+        } else if(item !== '...'){
             pageHtml += `
                 <button class="btn page" data-pagenum=${item}>
                     <span>${item}</span>
                 </button>
             `;
-        } else {
+        }else {
             pageHtml += `
                 <button class="btn page">
                     <span>${item}</span>
@@ -93,15 +173,17 @@ function displayPagination(currentPage, totalPages){
         }  
     })
     displayPages.innerHTML = pageHtml;
-    const pageButton = document.querySelectorAll('.btn.page');
-    pageButton.forEach(item => {
-        item.addEventListener('click', (e) => {
-            const pageValue = e.target.dataset.pagenum;
-            console.log(`Clicked button with data-page: ${pageValue}`);
-            renderData(pageValue);
-        })
-    })
+    const button = document.querySelector('.selected');
+    let pageValue = Number(button.dataset.pagenum);
+    if (!isNaN(pageValue)){
+        firstPage.classList.toggle('disable', pageValue == 1);
+        prevPage.classList.toggle('disable', pageValue == 1);
+        lastPage.classList.toggle('disable', pageValue == totalPages);
+        nextPage.classList.toggle('disable', pageValue == totalPages);
+    }
+
 }
+
 
 function generatePagination (currentPage, totalPages){
     let pagination = [];
@@ -120,12 +202,13 @@ function generatePagination (currentPage, totalPages){
             pagination.push(totalPages);
         }
     //當前頁碼差總頁數<5(後5頁)
-    } else if ((totalPage - currentPage) < 5){
+    } else if ((totalPages - currentPage) < 5){
         pagination.push(1);
         pagination.push('...');
-        for (let i = currentPage; i <= totalPages; i++){
+        for (let i = (totalPages - 5); i <= totalPages; i++){
             pagination.push(i);
         }
+        
      //當前頁碼不在前5頁、後5頁
     // 1 ... 4 5 6 ... 10
     } else {
