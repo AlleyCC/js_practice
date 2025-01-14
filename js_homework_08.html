@@ -1,0 +1,124 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newyear Countdown</title>
+
+  <style>
+  @import url("https://fonts.googleapis.com/css2?family=MuseoModerno:wght@300;400;500;600;700;800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'MuseoModerno', cursive;
+}
+
+body {
+  background-image: url("https://mridul2820.github.io/CSS-Vanila-JS-Projects/Vanila-JS/new-year-countdown/assets/crackers.jpg");
+  background-size: cover;
+  background-position: center center;
+  height: 100vh;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.year {
+  font-size: 200px;
+  z-index: -1;
+  opacity: .3;
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+h1 {
+  font-size: 60px;
+  margin: -100px 0 40px;
+}
+
+
+
+.countdown {
+  display: flex;
+  transform: scale(2);
+}
+
+.countdown .time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 15px;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <div id="year" class="year">2026</div>
+
+  <h1>Newyear Countdown</h1>
+
+  <div id="countdown" class="countdown">
+    <div class="time">
+      <h2 id="days">350</h2>
+      <small>days</small>
+    </div>
+    <div class="time">
+      <h2 id="hours">18</h2>
+      <small>hours</small>
+    </div>
+    <div class="time">
+      <h2 id="minutes">55</h2>
+      <small>minutes</small>
+    </div>
+    <div class="time">
+      <h2 id="seconds">49</h2>
+      <small>seconds</small>
+    </div>
+  </div>
+
+
+
+  <script>
+    const year = document.getElementById('year');
+    const days = document.getElementById('days');
+    const hours = document.getElementById('hours');
+    const minutes = document.getElementById('minutes');
+    const seconds = document.getElementById('seconds');
+    
+
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const nextYearTime = new Date(`${currentYear + 1}-01-01T00:00:00`);
+    year.innerText = currentYear + 1;
+    
+    function updateCountdownTimer(){
+      const now = new Date();
+      const diff = nextYearTime - now;
+      const daysDiff = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hoursDiff = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutesDiff = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsDiff = Math.floor((diff % (1000 * 60)) / 1000); // 秒
+
+
+      days.innerHTML = daysDiff;
+      hours.innerHTML = hoursDiff;
+      minutes.innerHTML = minutesDiff;
+      seconds.innerHTML = secondsDiff;
+    }
+    setInterval(updateCountdownTimer, 1000);
+
+  </script>
+
+</body>
+
+</html>
