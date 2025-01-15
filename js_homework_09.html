@@ -4,10 +4,123 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculator</title>
-  <style></style>
+  <link rel="stylesheet" type="text/css" href="./reset.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #dcdcdc;
+    }
+
+    .container {
+      width: 300px;
+      background-color: #000;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .display {
+      height: 30px;
+      background-color: #000;
+      color: white;
+      font-size: 2em;
+      text-align: right;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .button {
+        height: 60px;
+        font-size: 1.5em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .button.operator {
+        background-color: orange;
+        color: white;
+        
+    }
+
+    .button.number {
+        background-color: #555;
+        color: white;
+    }
+
+    .button.number.zero {
+        background-color: #555;
+        color: white;
+        grid-column: span 2;
+        border-radius: 30px;
+    }
+
+    .button.special {
+        background-color: #aaa;
+        color: black;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <div class="display">0</div>
+    <div class="buttons">
+        <button class="button special allclear">AC</button>
+        <button class="button special delete">DEL</button>
+        <button class="button special percentage">%</button>
+        <button class="button operator divide">/</button>
+        <button class="button number">7</button>
+        <button class="button number">8</button>
+        <button class="button number">9</button>
+        <button class="button operator times">*</button>
+        <button class="button number">4</button>
+        <button class="button number">5</button>
+        <button class="button number">6</button>
+        <button class="button operator minus">-</button>
+        <button class="button number">1</button>
+        <button class="button number">2</button>
+        <button class="button number">3</button>
+        <button class="button operator plus">+</button>
+        <button class="button number zero">0</button>
+        <button class="button number float">.</button>
+        <button class="button operator equal">=</button>
+        </div>
+    </div>
   <script>
+    const buttons = document.querySelector('.buttons');
+    const display = document.querySelector('.display');
+    buttons.addEventListener('click', (e) => {
+      const inputValue = e.target.innerText;
+      let displayText = display.textContent;
+      if (display.classList.contains('inactive')){
+        display.innerText = inputValue;
+        display.classList.remove('inactive');
+      } else {
+        if (inputValue == 'DEL'){
+          display.innerText = displayText.slice(0, -1);
+        } else if (inputValue == 'AC'){
+          display.innerText = '0';
+        } else if (inputValue == '='){
+          display.innerText = eval(displayText);
+          display.classList.add('inactive'); // prevent input after calculation
+        }else {
+          inputValue.replace(/\b0+(\d+)/g, '$1');
+          displayText += inputValue;
+          display.innerText = displayText.replace(/\b0+(\d+)/g, '$1');
+        } 
+      }         
+    })
     
   </script>
 </body>
