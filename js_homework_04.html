@@ -128,6 +128,7 @@
 
 
     <script>
+        /*
         //creat task
         const createBtn = document.getElementById('createBtn');
         const taskContainer = document.getElementById('taskContainer');
@@ -183,8 +184,143 @@
                 })
             }
         })
-        
+       */ 
+    const createBtn = document.getElementById('createBtn');
+    const taskContainer = document.getElementById('taskContainer');
+    const input = document.getElementById("taskInput");
 
+    // 1. 載入待辦事項列表 (GET /todos)
+    const loadTodos = async (reload) => {
+        try {
+            const response = await fetch('http://localhost:3000/todos');
+            const todos = await response.json();
+            if (reload){
+                taskContainer.innerHTML = "";
+            }
+            todos.forEach(todo => {
+                addTaskToUI(todo, reload);
+            });
+        } catch (error) {
+            console.error("Error loading todos:", error);
+        }
+    };
+
+    // 2. 創建新的待辦事項 (POST /todos)
+    createBtn.addEventListener('click', async function() {
+        if (!createBtn.classList.contains("update")){
+             if (input.value.trim() !== '') {
+                const newTask = {
+                    title: input.value.trim()
+                };
+
+            try {
+                const response = await fetch('http://localhost:3000/todos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newTask)
+                });
+                const addedTask = await response.json();
+                addTaskToUI(addedTask, false);
+                input.value = '';
+            } catch (error) {
+                console.error("Error creating todo:", error);
+            }
+        }
+        }
+       
+    });
+
+    // 3. 刪除待辦事項 (DELETE /todos/:id)
+    const deleteTask = async (taskId, taskElement) => {
+        try {
+            const response = await fetch(`http://localhost:3000/todos/${taskId}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                taskElement.remove();
+            } else {
+                console.error("Error deleting task");
+            }
+        } catch (error) {
+            console.error("Error deleting todo:", error);
+        }
+    };
+
+    // 4. 更新待辦事項 (PATCH /todos/:id)
+    const updateTask = async (taskId, updatedData, taskElement) => {
+        try {
+            const response = await fetch(`http://localhost:3000/todos/${taskId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedData)
+            });
+            const updatedTask = await response.json();
+            if (updatedTask.completed) {
+                taskElement.querySelector('span').style.textDecoration = 'line-through';
+            }
+        } catch (error) {
+            console.error("Error updating todo:", error);
+        }
+    };
+
+    // 5. 添加待辦事項到UI
+    const addTaskToUI = (todo, reload) => {
+        const taskContent = document.createElement('div');
+        taskContent.classList.add('task');
+        taskContent.innerHTML = `
+            <div class="task-description" id=${todo.id}>
+                <span>${todo.title}</span>
+            </div>
+            <div class="task-edition">
+                <button class="edit">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+                <button class="delete">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+        `;
+        
+        taskContainer.appendChild(taskContent);
+
+        // Complete task when clicked
+        taskContent.querySelector('.task-description').addEventListener('click', function () {
+            const taskId = todo.id;
+            updateTask(taskId, { completed: true }, taskContent);
+        });
+
+        // Edit task
+        const editBtn = taskContent.querySelector('.edit');
+        editBtn.addEventListener('click', function() {
+            input.value = todo.title;
+            createBtn.innerHTML = '<i class="fa-solid fa-rotate"></i>';
+            createBtn.classList.add('update');
+            createBtn.addEventListener('click', async function() {
+                const updatedTitle = input.value;
+                if (updatedTitle.trim() !== '') {
+                    const updatedTask = {
+                        title: updatedTitle,
+                        completed: false // Reset completed state
+                    };
+                    await updateTask(todo.id, updatedTask, taskContent);
+                    loadTodos(true);
+                }
+            });
+        });
+
+        // Delete task
+        const deleteBtn = taskContent.querySelector('.delete');
+        deleteBtn.addEventListener('click', function() {
+            deleteTask(todo.id, taskContent);
+        });
+    };
+
+    // 6. 初始化載入待辦事項
+    loadTodos(true);
         
 
     </script>
